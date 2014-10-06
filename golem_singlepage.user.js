@@ -34,6 +34,10 @@ function getPages() {
     function loadPage() {
         if (++i >= aa.length) return;
         var a = aa[i];
+        if (a.id == "jtoc_next") {
+            loadPage();
+            return;
+        }
         
         var xhr = new XMLHttpRequest();
         xhr.open('GET', a.href, true);
