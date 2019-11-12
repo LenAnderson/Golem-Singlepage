@@ -2,7 +2,7 @@
 // @name           Golem  - Singlepage
 // @namespace      https://github.com/LenAnderson/
 // @downloadURL    https://github.com/LenAnderson/Golem-Singlepage/raw/master/golem_singlepage.user.js
-// @version        1.1
+// @version        1.2
 // @match          https://www.golem.de/news/*
 // ==/UserScript==
 
