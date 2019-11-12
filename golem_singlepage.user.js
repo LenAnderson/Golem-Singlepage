@@ -3,7 +3,7 @@
 // @namespace      https://github.com/LenAnderson/
 // @downloadURL    https://github.com/LenAnderson/Golem-Singlepage/raw/master/golem_singlepage.user.js
 // @version        1.1
-// @match          http://www.golem.de/news/*
+// @match          https://www.golem.de/news/*
 // ==/UserScript==
 
 function getPages() {
@@ -11,9 +11,11 @@ function getPages() {
     var before = txt.nextSibling;
     var aa = document.querySelectorAll('#list-jtoc a');
     var i = -1;
-    insertPN(1, txt);
+    if (aa.length > 0) {
+        insertPN(1, txt);
+    }
     loadPage();
-    
+
     function insertPN(n, page) {
         page.style.position = 'relative';
         var pn = document.createElement('div');
@@ -30,7 +32,7 @@ function getPages() {
         pn.innerHTML = n;
         page.insertBefore(pn, page.children[0]);
     }
-    
+
     function loadPage() {
         if (++i >= aa.length) return;
         var a = aa[i];
@@ -38,7 +40,7 @@ function getPages() {
             loadPage();
             return;
         }
-        
+
         var xhr = new XMLHttpRequest();
         xhr.open('GET', a.href, true);
         xhr.onreadystatechange = function() {
@@ -46,6 +48,11 @@ function getPages() {
             var div = document.createElement('div');
             div.innerHTML = xhr.responseText;
             var page = div.querySelector('.formatted');
+            var xpathresult = document.evaluate(".//figcaption",page,null,XPathResult.ANY_TYPE,null);
+            var node = xpathresult.iterateNext();
+            if (node.innerText.indexOf("aktivieren") >= 0) {
+                node.parentNode.parentNode.removeChild(node.parentNode);
+            }
             txt.parentNode.insertBefore(page, before);
             insertPN(a.innerHTML, page);
             loadPage();
